@@ -16,13 +16,16 @@ var ChartFormer = {
             ){
                 source.name = 'ENT.' + source.name;
         }
+        //Display(source);
 
         // Check what DE columns were provided, if none, get an array representing the columns in the order they are in the data extension (wsProxy retrieve + sorting by the Ordinal value)             
         output.temp = this.Function.getColumnsWithDatatypes(source.key, source.lookupColumn)
         //Display(output.temp, "gold");
         if(source.columns.length == 0){
             output.columns = output.temp.columns;
+            Display("no columns!", "pink");
         }
+        Display(output);
         output.columnConfiguration = output.temp.columnConfiguration;
         delete output.temp
         // end: column retrieve
@@ -31,14 +34,15 @@ var ChartFormer = {
 
         // Retrieve the data
         var data = Platform.Function.LookupRows(source.name, source.lookupColumn, source.lookupValue)
-        //Display(data);
+        Display(data);
 
-        var headerCharts = "line area steppedArea bar column pie bubble";
+        var headerCharts = "lineClassic area steppedArea bar column pie bubble";
         if (headerCharts.indexOf(type) > -1){
             output.data = this.Function.transformIntoArrayOfArrays(data, true);
         } else {
             output.data = this.Function.transformIntoArrayOfArrays(data, false);
         }
+        Display(output)
         return output;
     },
 
@@ -60,8 +64,9 @@ var ChartFormer = {
                 for (d in data){
                     var record = data[d];
                     var row = {};
-                    for(c in source.columns){
-                        var property = source.columns[c];
+                    //Display(output, "gold");
+                    for(c in output.columns){
+                        var property = output.columns[c];
                         if (property != null){
                             row[property] = record[property];
                             if ((record[property] == null) || (record[property] == '') || (record[property] == undefined)){
@@ -137,7 +142,7 @@ var ChartFormer = {
                                 columns: [],
                                 columnConfiguration: []
                             }
-
+            Display(source);
             // Transform data extension data types into JS data types
             for (i = 0; i < DeFields.Results.length; i++){
 

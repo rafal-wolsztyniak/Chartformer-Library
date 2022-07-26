@@ -1,0 +1,118 @@
+<script runat="server">
+Platform.Load("Core", "1");
+
+var ChartFormer = eval(Platform.Function.ContentBlockByKey('chartformer-library'));
+
+var de = {
+    name: '[your data extension name]',
+    key: '[your data extension external key]',
+    columns: [], // if left empty, the code will get them, if filled, the code will respect the selection and order
+    chartInChildBu: true,
+    deIsShared: false,
+    lookupColumn: 'Chartable',
+    lookupValue: true,  
+    enterpriseId: 1234
+}
+
+var chartData = ChartFormer.google("table", de);
+var chartDataString = Stringify(chartData);
+
+
+
+// ⚙️ FUNCTIONS ------------------------------------------------------
+
+// 🐛 Display Function
+function Display(content, color) {
+    var displayBlock = '<div style="Background-color:[color];Display: block; margin-bottom: 8px; padding:4px; padding-left:12px; overflow-wrap: break-word;">[text]</div>';
+
+    var defaultConfig = {
+        hold: false, // set this to true to disable this function from displaying anything
+        randomizeUndefined: true, // should the color be random, if the color is undefined? 
+        defaultColor: "whitesmoke", // if the above value is false, use this as the color
+        hsl: {
+            hueStart: 60, // just to not start at reddish hues reminescent of errors
+            saturation: 70, //100 - Math.floor(Math.random()*10),
+            lightness: 90, //95 - Math.floor(Math.random()*10)
+            increment: 25 // multiply by a number to not get too similar hues, increase to 
+        }
+    };
+
+    if (defaultConfig.hold != true) {
+        // color checks 
+        if (typeof color == 'undefined') {
+            if (defaultConfig.randomizeUndefined == true){
+                color = Math.floor(Math.random()*defaultConfig.hsl.increment);
+            } else {
+                color = defaultConfig.defaultColor;
+            }
+        }
+        if (typeof color == "number") {
+            color = "hsl([h], [s]%, [l]%)"
+                        .replace("[h]", (color*defaultConfig.hsl.increment + defaultConfig.hsl.hueStart)%360)
+                        .replace("[s]", defaultConfig.hsl.saturation)
+                        .replace("[l]", defaultConfig.hsl.lightness)
+        } else if ((color == "r") || (color == "random")){
+            color = Math.floor(Math.random()*defaultConfig.hsl.increment);
+        };
+
+        // Check what was passed as the first argument
+        if (typeof content != "string") {
+            content = Stringify(content);
+        };
+
+        Write(displayBlock
+            .replace("[color]", color)
+            .replace("[text]", content)
+            .replace(/\\/g, "")
+            .replace(/,{"/g, ',<br>{<br>"')
+            .replace(/\[{"/g, '[<br>{<br>"')
+            .replace(/},/g, '<br>},<br>')
+            .replace(/,"/g, ',<br>"')
+            .replace(/, "/g, ',<br>"')
+            .replace(/\[{"/g, '<br>[{')
+            );
+    }
+}
+</script>
+
+<html>
+  <head>
+  <title>Chartformer: Table </title>
+    <style>
+        *{
+            font-family: monospace;
+        },
+        .small-font {
+            font-size: 10px;
+            height: 10px;
+            font-family: monospace;
+        }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      var output = <ctrl:var name=chartDataString />;
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        for (c in output.columnConfiguration){
+            data.addColumn(output.columnConfiguration[c].type, output.columnConfiguration[c].name)
+        }
+        data.addRows(output.data);
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+allowHtml: true
+        table.draw(data, {showRowNumber: true, width: '100%', allowHtml: true});
+      }
+    </script>
+  </head>
+  <body>
+  <h1>Google Chart Table</h1>
+    <div style="font-family: monospace;">
+        <div id="table_div"></div>
+    </div>
+  </body>
+</html>
+
