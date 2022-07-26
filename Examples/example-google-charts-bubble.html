@@ -26,7 +26,7 @@ function Display(content, color) {
     var displayBlock = '<div style="Background-color:[color];Display: block; margin-bottom: 8px; padding:4px; padding-left:12px; overflow-wrap: break-word;">[text]</div>';
 
     var defaultConfig = {
-        hold: false, // set this to true to disable this function from displaying anything
+        hold: true, // set this to true to disable this function from displaying anything
         randomizeUndefined: true, // should the color be random, if the color is undefined? 
         defaultColor: "whitesmoke", // if the above value is false, use this as the color
         hsl: {

@@ -23,9 +23,8 @@ var ChartFormer = {
         //Display(output.temp, "gold");
         if(source.columns.length == 0){
             output.columns = output.temp.columns;
-            Display("no columns!", "pink");
         }
-        Display(output);
+        //Display(output);
         output.columnConfiguration = output.temp.columnConfiguration;
         delete output.temp
         // end: column retrieve
@@ -34,7 +33,7 @@ var ChartFormer = {
 
         // Retrieve the data
         var data = Platform.Function.LookupRows(source.name, source.lookupColumn, source.lookupValue)
-        Display(data);
+        //Display(data);
 
         var headerCharts = "lineClassic area steppedArea bar column pie bubble";
         if (headerCharts.indexOf(type) > -1){
@@ -42,7 +41,7 @@ var ChartFormer = {
         } else {
             output.data = this.Function.transformIntoArrayOfArrays(data, false);
         }
-        Display(output)
+        //Display(output)
         return output;
     },
 
@@ -142,7 +141,7 @@ var ChartFormer = {
                                 columns: [],
                                 columnConfiguration: []
                             }
-            Display(source);
+            //Display(source);
             // Transform data extension data types into JS data types
             for (i = 0; i < DeFields.Results.length; i++){
 
