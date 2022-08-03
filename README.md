@@ -1,7 +1,8 @@
 # ChartFormer
+### SSJS Library for easier data visualization in Salesforce Marketing Cloud
+
 ![image](https://user-images.githubusercontent.com/20286791/182715717-b0a81835-acf0-4e6f-87d6-71c11f4b04c0.png)
 
-### SSJS Library for easier data visualization in Salesforce Marketing Cloud
 Designed to transform data loaded from SFMC data extensions into objects compatible with Google Charts.
 
 Supported chart types:
