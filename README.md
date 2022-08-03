@@ -15,7 +15,7 @@ Supported chart types:
 - Bubble chart
 - TABLE
 
-Documentation to follow soon on [SFMC.Quest](https://sfmc.quest)
+Documentation to follow in September on [SFMC.Quest](https://sfmc.quest)
 
 ---
 
